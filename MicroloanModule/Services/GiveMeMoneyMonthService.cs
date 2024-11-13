@@ -1,6 +1,8 @@
 ﻿using ApiLibrary;
 using DatabaseCore;
+using Microsoft.EntityFrameworkCore;
 using Models.Models;
+using System;
 
 namespace MicroloanModule.Services;
 
@@ -11,6 +13,29 @@ public class GiveMeMoneyMonthService
     public GiveMeMoneyMonthService(MicroloanDbContext db)
     {
         _db = db;
+    }
+
+    public async Task<ServiceAnswer<Money>> Get(string id)
+    {
+        if(!Guid.TryParse(id, out var guid))
+        {
+            return new ServiceAnswer<Money>(false, null)
+            {
+                Errors = new[]
+                {
+                    new ServiceFieldError(new[] { "id" }, "id не соответсвует формату. (uuid4)"),
+                }
+            };
+        }
+
+        return await Get(guid);
+    }
+
+    public async Task<ServiceAnswer<Money>> Get(Guid id)
+    {
+        var result = await _db.Moneis.SingleOrDefaultAsync(x => x.Id == id);
+
+        return new ServiceAnswer<Money>(true, result);
     }
 
     public async Task<ServiceAnswer<Money>> Create(float sum, uint time, float rate)
@@ -59,8 +84,4 @@ public class GiveMeMoneyMonthService
         return new ServiceAnswer<Money>(true, money);
     }
 
-    public async Task<ServiceAnswer<ICollection<MicroloanItem>>> GetList()
-    {
-
-    }
 }

@@ -12,7 +12,8 @@ builder.Services.AddSwaggerGen();
 builder.Services
     .AddDbContext<MicroloanDbContext>(o => 
         o.UseSqlite("microloan.db"))
-    .AddScoped<GiveMeMoneyMonthController>();
+    .AddScoped<GiveMeMoneyMonthController>()
+    .AddScoped<MicroloanController>();
 
 var app = builder.Build();
 

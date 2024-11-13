@@ -16,12 +16,6 @@ public class GiveMeMoneyMonthController : ControllerBase
         _moneyService = giveMeMoney;
     }
 
-    [HttpPost("getList")]
-    public async Task<IActionResult> GetList()
-    {
-
-    }
-
     [HttpPost("createMicroloan")]
     public async Task<IActionResult> CreateMicroloan([FromBody] CreateMicroloanMonth body)
     {
