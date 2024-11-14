@@ -75,7 +75,9 @@ public class GiveMeMoneyMonthService
         {
             Sum = sum,
             Time = time,
-            Rate = rate,
+            Rate = rate / 100,
+
+            CreateTime = DateTime.UtcNow,
         };
 
         _db.Moneis.Add(money);

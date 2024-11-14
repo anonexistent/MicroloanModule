@@ -8,7 +8,7 @@ public class Money
     public uint Time { get; set; }
     public float Rate { get; set; }
 
-    public Guid MoneyId { get; set; }
+    public DateTime CreateTime { get; set; }
 
-    public virtual List<MicroloanItem> Items { get; set; }
+    public virtual ICollection<MicroloanItem> Items { get; set; } = new List<MicroloanItem>();
 }

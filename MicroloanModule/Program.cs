@@ -1,5 +1,6 @@
 using DatabaseCore;
 using MicroloanModule.Controllers;
+using MicroloanModule.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,9 +12,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .AddDbContext<MicroloanDbContext>(o => 
-        o.UseSqlite("microloan.db"))
-    .AddScoped<GiveMeMoneyMonthController>()
-    .AddScoped<MicroloanController>();
+        o.UseSqlite("Data Source=microloan.db"))
+    .AddScoped<GiveMeMoneyMonthService>()
+    .AddScoped<MicroloanService>();
 
 var app = builder.Build();
 
@@ -28,5 +29,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetService<MicroloanDbContext>();
+    dbContext?.Database.Migrate();
+}
 
 app.Run();
